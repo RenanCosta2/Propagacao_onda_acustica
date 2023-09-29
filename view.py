@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 
 #número total de tempos
-nt = 15
+nt = 501
 
 fig, ax = plt.subplots()
 
@@ -13,7 +13,7 @@ def init():
 
 #função de atualização da animação
 def update(t):
-    if t % 2 == 0:
+    if t % 50 == 0:
         filename = f"samples/sample_t{t}.bin"
 
         data = np.fromfile(filename, dtype=np.float32)
@@ -23,11 +23,11 @@ def update(t):
         data = data.reshape((nx, ny, nz))
 
         # 15 é a localização em z da fonte
-        plt.contourf(data[:, :, 15], cmap='viridis', levels=10)
+        plt.imshow(data[:, :, 15], cmap='viridis', vmin=-1, vmax=1)
         plt.title(f'Tempo {t}')
 
 # Cria a animação
-ani = animation.FuncAnimation(fig, update, frames=nt, init_func=init, repeat=False, interval = 1500)
+ani = animation.FuncAnimation(fig, update, frames=nt, init_func=init, repeat=False, interval = 0)
 
 # Mostra a animação
 plt.show()

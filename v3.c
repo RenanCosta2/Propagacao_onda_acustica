@@ -11,7 +11,7 @@ void initializeSource(float *s, float f, float dt, int nt) {
     for (int i = 0; i < nt; i++)
     {
         t = i * dt;
-        s[i] = (1 - 2 * pi * pi * f * f * t * t) * exp((-pi) * (-pi) * f * f * t * t);
+        s[i] = (1 - 2 * pi * pi * f * f * t * t) * exp(-pi * pi * f * f * t * t);
     }
     
 }
@@ -90,7 +90,7 @@ void propagateWave(float *s, float c, float dx, float dy, float dz, float dt,
         uProximo = uAnterior;
         uAnterior = temp;
 
-        if (t % 2 == 0)
+        if (t % 50 == 0)
         {
             
             char filename[50];
@@ -116,11 +116,11 @@ void propagateWave(float *s, float c, float dx, float dy, float dz, float dt,
 int main() {
     // Parâmetros de entrada
     int xs = 15, ys = 15, zs = 15;  // Posição da fonte
-    float dx = 5, dy = 5, dz = 5;  // Resolução espacial
-    float dt = 0.01;         // Passo de tempo
+    float dx = 10, dy = 10, dz = 10;  // Resolução espacial
+    float dt = 0.001;         // Passo de tempo
     int nx = 50, ny = 50, nz = 50;   // Dimensões da malha tridimensional
-    int nt = 15;           // Número de passos de tempo
-    float f = 5;  // Frequência de pico da fonte
+    int nt = 501;           // Número de passos de tempo
+    float f = 10;  // Frequência de pico da fonte
     int c = 1500; //Velocidade de propagação da onda no meio
 
     float *s = (float *)malloc(nt * sizeof(float));
