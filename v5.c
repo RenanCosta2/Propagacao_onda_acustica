@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <string.h>
+#include <omp.h>
 
 // Função para inicializar a fonte s
 void initializeSource(float *s, float f, float dt, int nt, int thread_count) {
@@ -26,6 +27,9 @@ void propagateWave(float *s, float c, float dx, float dy, float dz, float dt,
     float *uAnterior = malloc(nx * ny * nz * sizeof(float));
     float *uProximo = malloc(nx * ny * nz * sizeof(float));
     float *u = malloc(nx * ny * nz * sizeof(float));
+    double start, finish;
+
+    start = omp_get_wtime();
 
     memset(u, 0, nx * ny * nz * sizeof(float));
     memset(uAnterior, 0, nx * ny * nz * sizeof(float));
@@ -87,6 +91,10 @@ void propagateWave(float *s, float c, float dx, float dy, float dz, float dt,
         
 
     }
+
+    finish = omp_get_wtime();
+
+    printf("Tempo: %lf \n", finish - start);
     
     free(uAnterior);
     free(uProximo);
@@ -99,7 +107,7 @@ int main(int argc, char* argv[]) {
     float dx = 10, dy = 10, dz = 10;  // Resolução espacial
     float dt = 0.001;         // Passo de tempo
     int nx = 50, ny = 50, nz = 50;   // Dimensões da malha tridimensional
-    int nt = 501;           // Número de passos de tempo
+    int nt = 10000;           // Número de passos de tempo
     float f = 10;  // Frequência de pico da fonte
     int c = 1500; //Velocidade de propagação da onda no meio
     int thread_count; //Número de threads
