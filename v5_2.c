@@ -27,6 +27,9 @@ void propagateWave(float *s, float c, float dx, float dy, float dz, float dt,
     float *uAnterior = malloc(nx * ny * nz * sizeof(float));
     float *uProximo = malloc(nx * ny * nz * sizeof(float));
     float *u = malloc(nx * ny * nz * sizeof(float));
+    double start, finish;
+
+    start = omp_get_wtime();
 
     memset(u, 0, nx * ny * nz * sizeof(float));
     memset(uAnterior, 0, nx * ny * nz * sizeof(float));
@@ -35,7 +38,7 @@ void propagateWave(float *s, float c, float dx, float dy, float dz, float dt,
     for (int t = 0; t < nt; t++)
     {
 #       pragma omp parallel for collapse(3) num_threads(thread_count)\
-        default(none) shared(nx, ny, nz, nt, dx, dy, dz, dt, u, uAnterior, uProximo, c, xs, ys, zs, s) private(dEx, dEy, dEz)
+        default(none) shared(nx, ny, nz, nt, dx, dy, dz, dt, u, uAnterior, uProximo, c, xs, ys, zs, s) private(dEx, dEy, dEz) schedule(guided)
         for (int x = 2; x < nx - 2; x++)
         {
             for (int y = 2; y < ny - 2; y++)
@@ -75,23 +78,27 @@ void propagateWave(float *s, float c, float dx, float dy, float dz, float dt,
         uProximo = uAnterior;
         uAnterior = temp;
 
-        if (t % 50 == 0)
-        {
+        // if (t % 50 == 0)
+        // {
             
-            char filename[50];
-            sprintf(filename, "samples/sample_t%d.bin", t); // Cria um nome de arquivo único para cada tempo
-            FILE *file = fopen(filename, "wb");
-            if (file != NULL) {
-                // Escreva os dados de uProximo no arquivo binário
-                fwrite(uProximo, sizeof(float), nx * ny * nz, file);
-                fclose(file);
-            } else {
-                printf("Erro ao abrir o arquivo para escrita.\n");
-            }
-        }
+        //     char filename[50];
+        //     sprintf(filename, "samples/sample_t%d.bin", t); // Cria um nome de arquivo único para cada tempo
+        //     FILE *file = fopen(filename, "wb");
+        //     if (file != NULL) {
+        //         // Escreva os dados de uProximo no arquivo binário
+        //         fwrite(uProximo, sizeof(float), nx * ny * nz, file);
+        //         fclose(file);
+        //     } else {
+        //         printf("Erro ao abrir o arquivo para escrita.\n");
+        //     }
+        // }
         
 
     }
+
+    finish = omp_get_wtime();
+
+    printf("Tempo: %lf \n", finish - start);
     
     free(uAnterior);
     free(uProximo);
@@ -100,11 +107,11 @@ void propagateWave(float *s, float c, float dx, float dy, float dz, float dt,
 
 int main(int argc, char* argv[]) {
     // Parâmetros de entrada
-    int xs = 15, ys = 15, zs = 15;  // Posição da fonte
+    int xs = 25, ys = 25, zs = 25;  // Posição da fonte
     float dx = 10, dy = 10, dz = 10;  // Resolução espacial
     float dt = 0.001;         // Passo de tempo
     int nx = 50, ny = 50, nz = 50;   // Dimensões da malha tridimensional
-    int nt = 10000;           // Número de passos de tempo
+    int nt = 20000;           // Número de passos de tempo
     float f = 10;  // Frequência de pico da fonte
     int c = 1500; //Velocidade de propagação da onda no meio
     int thread_count; //Número de threads
