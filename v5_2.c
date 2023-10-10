@@ -27,9 +27,6 @@ void propagateWave(float *s, float c, float dx, float dy, float dz, float dt,
     float *uAnterior = malloc(nx * ny * nz * sizeof(float));
     float *uProximo = malloc(nx * ny * nz * sizeof(float));
     float *u = malloc(nx * ny * nz * sizeof(float));
-    double start, finish;
-
-    start = omp_get_wtime();
 
     memset(u, 0, nx * ny * nz * sizeof(float));
     memset(uAnterior, 0, nx * ny * nz * sizeof(float));
@@ -78,27 +75,23 @@ void propagateWave(float *s, float c, float dx, float dy, float dz, float dt,
         uProximo = uAnterior;
         uAnterior = temp;
 
-        // if (t % 50 == 0)
-        // {
+        if (t % 50 == 0)
+        {
             
-        //     char filename[50];
-        //     sprintf(filename, "samples/sample_t%d.bin", t); // Cria um nome de arquivo único para cada tempo
-        //     FILE *file = fopen(filename, "wb");
-        //     if (file != NULL) {
-        //         // Escreva os dados de uProximo no arquivo binário
-        //         fwrite(uProximo, sizeof(float), nx * ny * nz, file);
-        //         fclose(file);
-        //     } else {
-        //         printf("Erro ao abrir o arquivo para escrita.\n");
-        //     }
-        // }
+            char filename[50];
+            sprintf(filename, "samples/sample_t%d.bin", t); // Cria um nome de arquivo único para cada tempo
+            FILE *file = fopen(filename, "wb");
+            if (file != NULL) {
+                // Escreva os dados de uProximo no arquivo binário
+                fwrite(uProximo, sizeof(float), nx * ny * nz, file);
+                fclose(file);
+            } else {
+                printf("Erro ao abrir o arquivo para escrita.\n");
+            }
+        }
         
 
     }
-
-    finish = omp_get_wtime();
-
-    printf("Tempo: %lf \n", finish - start);
     
     free(uAnterior);
     free(uProximo);
@@ -111,7 +104,7 @@ int main(int argc, char* argv[]) {
     float dx = 10, dy = 10, dz = 10;  // Resolução espacial
     float dt = 0.001;         // Passo de tempo
     int nx = 50, ny = 50, nz = 50;   // Dimensões da malha tridimensional
-    int nt = 20000;           // Número de passos de tempo
+    int nt = 501;           // Número de passos de tempo
     float f = 10;  // Frequência de pico da fonte
     int c = 1500; //Velocidade de propagação da onda no meio
     int thread_count; //Número de threads
