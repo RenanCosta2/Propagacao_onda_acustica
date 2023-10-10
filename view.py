@@ -23,7 +23,7 @@ def update(t):
         data = data.reshape((nx, ny, nz))
 
         # 15 é a localização em z da fonte
-        plt.imshow(data[:, :, 15], cmap='viridis')
+        plt.imshow(data[:, :, 25], cmap='viridis')
         plt.title(f'Tempo {t}')
 
 # Cria a animação
