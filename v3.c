@@ -58,26 +58,6 @@ void propagateWave(float *s, float c, float dx, float dy, float dz, float dt,
 
                     uProximo[x * ny * nz + y * nz + z] = c * c * dt * dt * (dEx + dEy + dEz) - uAnterior[x * ny * nz + y * nz + z] + 2 * u[x * ny * nz + y * nz + z];
                     
-                    // dEx = ((-1.0/12.0)*u[x - 2][y][z] + 
-                    //        (4.0/3.0)*u[x - 1][y][z] - 
-                    //        (5.0/2.0)*u[x][y][z] + 
-                    //        (4.0/3.0)*u[x + 1][y][z] - 
-                    //        (1.0/12.0)*u[x + 2][y][z])/dx * dx;
-
-                    // dEy = ((-1.0/12.0)*u[x][y - 2][z] +
-                    //        (4.0/3.0)*u[x][y - 1][z] - 
-                    //        (5.0/2.0)*u[x][y][z] + 
-                    //        (4.0/3.0)*u[x][y + 1][z] - 
-                    //        (1.0/12.0)*u[x][y + 2][z])/dy * dy;
-
-                    // dEz = ((-1.0/12.0)*u[x][y][z - 2] +
-                    //        (4.0/3.0)*u[x][y][z - 1] - 
-                    //        (5.0/2.0)*u[x][y][z] + 
-                    //        (4.0/3.0)*u[x][y][z + 1] - 
-                    //        (1.0/12.0)*u[x][y][z + 2])/dz * dz;
-
-                    // uProximo[x][y][z] = c * c * dt * dt * (dEx + dEy + dEz) - uAnterior[x][y][z] + 2 * u[x][y][z];
-                    
                 }
             } 
         }
@@ -115,7 +95,7 @@ void propagateWave(float *s, float c, float dx, float dy, float dz, float dt,
 
 int main() {
     // Parâmetros de entrada
-    int xs = 15, ys = 15, zs = 15;  // Posição da fonte
+    int xs = 25, ys = 25, zs = 25;  // Posição da fonte
     float dx = 10, dy = 10, dz = 10;  // Resolução espacial
     float dt = 0.001;         // Passo de tempo
     int nx = 50, ny = 50, nz = 50;   // Dimensões da malha tridimensional
