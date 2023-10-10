@@ -75,19 +75,19 @@ void propagateWave(float *s, float c, float dx, float dy, float dz, float dt,
         uProximo = uAnterior;
         uAnterior = temp;
 
-        if (t % 50 == 0)
-        {
-            char filename[50];
-            sprintf(filename, "samples/sample_t%d.bin", t); // Cria um nome de arquivo único para cada tempo
-            FILE *file = fopen(filename, "wb");
-            if (file != NULL) {
-                // Escreva os dados de uProximo no arquivo binário
-                fwrite(uProximo, sizeof(float), nx * ny * nz, file);
-                fclose(file);
-            } else {
-                printf("Erro ao abrir o arquivo para escrita.\n");
-            }
-        }
+        // if (t % 50 == 0)
+        // {
+        //     char filename[50];
+        //     sprintf(filename, "samples/sample_t%d.bin", t); // Cria um nome de arquivo único para cada tempo
+        //     FILE *file = fopen(filename, "wb");
+        //     if (file != NULL) {
+        //         // Escreva os dados de uProximo no arquivo binário
+        //         fwrite(uProximo, sizeof(float), nx * ny * nz, file);
+        //         fclose(file);
+        //     } else {
+        //         printf("Erro ao abrir o arquivo para escrita.\n");
+        //     }
+        // }
         
 
     }
@@ -107,7 +107,7 @@ int main(int argc, char* argv[]) {
     float dx = 10, dy = 10, dz = 10;  // Resolução espacial
     float dt = 0.001;         // Passo de tempo
     int nx = 50, ny = 50, nz = 50;   // Dimensões da malha tridimensional
-    int nt = 10000;           // Número de passos de tempo
+    int nt = 5000;           // Número de passos de tempo
     float f = 10;  // Frequência de pico da fonte
     int c = 1500; //Velocidade de propagação da onda no meio
     int thread_count; //Número de threads
